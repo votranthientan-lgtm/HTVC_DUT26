@@ -26,9 +26,15 @@ Faculty of Electrical Engineering, Academic Year 2025–2026 Project Title: "Hig
 | LCD T2 | Màn hình | 0x26 (I2C) | SDA/SCL |
 | LCD T3 | Màn hình | 0x25 (I2C) | SDA/SCL |
 | Menu Control | Menu/Nút | 0x24 (I2C), 41, 43, 45, 47 | I2C + 4 chân Digital |
-
+***Hình ảnh sản phẩm
 <img width="1920" height="2560" alt="image" src="https://github.com/user-attachments/assets/909a3a1e-39d1-4353-b07c-1f6b864a8187" />
 
+***Giao diện control trên LCD bằng nút bấm
 <img width="2568" height="1926" alt="image" src="https://github.com/user-attachments/assets/f6e82875-14be-4b0f-98b6-df89e8186733" />
+
+***Giao diện web dashboard
+<img width="1280" height="720" alt="image" src="https://github.com/user-attachments/assets/52312c2b-f3ed-40ae-9cad-918821d5e4ed" />
+<img width="1280" height="730" alt="image" src="https://github.com/user-attachments/assets/2d58d695-e9ad-40e2-afdb-ce833b4656e1" />
+<img width="1280" height="718" alt="image" src="https://github.com/user-attachments/assets/56cda728-b53b-458c-9cd2-f7a2fe01e271" />
 
 
