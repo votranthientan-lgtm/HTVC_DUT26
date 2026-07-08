@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - HTVC{% endblock %}
+
+{% block content %}
+<!-- Summary Cards -->
+<div class="realtime-summary">
+    <div class="realtime-summary-header">
+        <div>
+            <h2 class="realtime-summary-title">
+                <span class="realtime-status-dot"></span>
+                Tổng quan theo thời gian thực
+            </h2>
+            <p class="realtime-summary-subtitle">Cập nhật: <span id="lastUpdate">--:--:--</span></p>
+        </div>
+        <div class="summary-actions">
+            <button class="btn btn-sm btn-secondary" onclick="refreshData()">
+                <img src="{{ url_for('static', filename='images/refresh.svg') }}" alt="Làm mới" class="btn-icon-img">
+                Làm mới
+            </button>
+        </div>
+    </div>
+    <div class="realtime-summary-content">
+        <!-- Sensor Summary Grid -->
+        <div class="realtime-summary-grid">
+            <div class="realtime-sensor-card">
+                <span class="realtime-sensor-label">Nhiệt độ trung bình</span>
+                <div class="realtime-sensor-main">
+                    <div>
+                        <div class="realtime-sensor-value" id="avgTemp">--.-</div>
+                        <div class="realtime-sensor-unit">°C</div>
+                    </div>
+                    <div class="realtime-sensor-icon"><span class="icon-mask icon-mask--lg icon-temp" aria-hidden="true"></span></div>
+                </div>
+            </div>
+            
+            <div class="realtime-sensor-card">
+                <span class="realtime-sensor-label">Độ ẩm trung bình</span>
+                <div class="realtime-sensor-main">
+                    <div>
+                        <div class="realtime-sensor-value" id="avgHum">--.-</div>
+                        <div class="realtime-sensor-unit">%</div>
+                    </div>
+                    <div class="realtime-sensor-icon"><span class="icon-mask icon-mask--lg icon-humidity" aria-hidden="true"></span></div>
+                </div>
+            </div>
+            
+            <div class="realtime-sensor-card">
+                <span class="realtime-sensor-label">TDS trung bình</span>
+                <div class="realtime-sensor-main">
+                    <div>
+                        <div class="realtime-sensor-value" id="avgTds">---</div>
+                        <div class="realtime-sensor-unit">ppm</div>
+                    </div>
+                    <div class="realtime-sensor-icon"><span class="icon-mask icon-mask--lg icon-tds" aria-hidden="true"></span></div>
+                </div>
+            </div>
+            
+            <div class="realtime-sensor-card">
+                <span class="realtime-sensor-label">Trạng thái thiết bị</span>
+                <div class="realtime-sensor-main">
+                    <div>
+                        <div class="realtime-sensor-value" id="deviceStatus">--</div>
+                        <div class="realtime-sensor-unit" id="deviceCount">0 thiết bị</div>
+                    </div>
+                    <div class="realtime-sensor-icon"><span class="icon-mask icon-mask--lg icon-device" aria-hidden="true"></span></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Controls -->
+        <h3 class="section-title">Điều khiển nhanh</h3>
+        <div class="realtime-controls-grid">
+            <div class="realtime-control-item">
+                <div class="realtime-control-label">
+                    <span class="realtime-control-name"><span class="icon-mask icon-mask--sm icon-led control-icon" aria-hidden="true"></span>LED Tổng</span>
+                    <span class="realtime-control-status" id="ledStatus">Tắt</span>
+                </div>
+                <label class="realtime-toggle">
+                    <input type="checkbox" id="toggleLed" onchange="toggleMasterLed()">
+                    <span class="realtime-toggle-slider"></span>
+                </label>
+            </div>
+            
+            <div class="realtime-control-item">
+                <div class="realtime-control-label">
+                    <span class="realtime-control-name"><span class="icon-mask icon-mask--sm icon-pump control-icon" aria-hidden="true"></span>Bơm nước</span>
+                    <span class="realtime-control-status" id="pumpStatus">Tắt</span>
+                </div>
+                <label class="realtime-toggle">
+                    <input type="checkbox" id="togglePump" onchange="toggleMasterPump()">
+                    <span class="realtime-toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="realtime-control-item">
+                <div class="realtime-control-label">
+                    <span class="realtime-control-name"><span class="icon-mask icon-mask--sm icon-fan control-icon" aria-hidden="true"></span>Quạt Tổng</span>
+                    <span class="realtime-control-status" id="fanStatus">Tắt</span>
+                </div>
+                <label class="realtime-toggle">
+                    <input type="checkbox" id="toggleFan" onchange="toggleMasterFan()">
+                    <span class="realtime-toggle-slider"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Floor Cards -->
+<div class="section-title">Chi tiết từng tầng</div>
+<div class="grid" id="floorCards">
+    <!-- Floor 1 -->
+    <div class="card floor-card" data-floor="1">
+        <div class="card-header">
+            <h3><span class="icon-mask icon-mask--sm icon-leaf floor-title-icon" aria-hidden="true"></span>Tầng 1</h3>
+            <span class="status-badge online">Online</span>
+        </div>
+        <div class="floor-sensors">
+            <div class="sensor-row">
+                <span class="sensor-label sensor-label-with-icon"><span class="icon-mask icon-mask--xs icon-temp sensor-label-icon" aria-hidden="true"></span>Nhiệt độ</span>
+                <span class="sensor-value" id="floor1-temp">-- °C</span>
+            </div>
+            <div class="sensor-row">
+                <span class="sensor-label sensor-label-with-icon"><span class="icon-mask icon-mask--xs icon-humidity sensor-label-icon" aria-hidden="true"></span>Độ ẩm</span>
+                <span class="sensor-value" id="floor1-hum">-- %</span>
+            </div>
+            <div class="sensor-row">
+                <span class="sensor-label sensor-label-with-icon"><span class="icon-mask icon-mask--xs icon-tds sensor-label-icon" aria-hidden="true"></span>TDS</span>
+                <span class="sensor-value" id="floor1-tds">-- ppm</span>
+            </div>
+            <div class="sensor-row">
+                <span class="sensor-label sensor-label-with-icon"><span class="icon-mask icon-mask--xs icon-device sensor-label-icon" aria-hidden="true"></span>pH</span>
+                <span class="sensor-value" id="floor1-ph">--</span>
+            </div>
+        </div>
+        <div class="floor-controls">
+            <button class="btn btn-sm" onclick="toggleLed(1)">
+                <span class="icon-mask icon-mask--sm icon-led control-icon" aria-hidden="true"></span> LED
+            </button>
+            <button class="btn btn-sm" onclick="togglePump(1)">
+                <span class="icon-mask icon-mask--sm icon-pump control-icon" aria-hidden="true"></span> Bơm
+            </button>
+            <button class="btn btn-sm" onclick="toggleFan(1)">
+                <span class="icon-mask icon-mask--sm icon-fan control-icon" aria-hidden="true"></span> Quạt
+            </button>
+        </div>
+    </div>
+    
+    <!-- Floor 2 -->
+    <div class="card floor-card" data-floor="2">
+        <div class="card-header">
+            <h3><span class="icon-mask icon-mask--sm icon-leaf floor-title-icon" aria-hidden="true"></span>Tầng 2</h3>
+            <span class="status-badge online">Online</span>
+        </div>
+        <div class="floor-sensors">
+            <div class="sensor-row">
+                <span class="sensor-label sensor-label-with-icon"><span class="icon-mask icon-mask--xs icon-temp sensor-label-icon" aria-hidden="true"></span>Nhiệt độ</span>
+                <span class="sensor-value" id="floor2-temp">-- °C</span>
+            </div>
+            <div class="sensor-row">
+                <span class="sensor-label sensor-label-with-icon"><span class="icon-mask icon-mask--xs icon-humidity sensor-label-icon" aria-hidden="true"></span>Độ ẩm</span>
+                <span class="sensor-value" id="floor2-hum">-- %</span>
+            </div>
+            <div class="sensor-row">
+                <span class="sensor-label sensor-label-with-icon"><span class="icon-mask icon-mask--xs icon-tds sensor-label-icon" aria-hidden="true"></span>TDS</span>
+                <span class="sensor-value" id="floor2-tds">-- ppm</span>
+            </div>
+            <div class="sensor-row">
+                <span class="sensor-label sensor-label-with-icon"><span class="icon-mask icon-mask--xs icon-device sensor-label-icon" aria-hidden="true"></span>pH</span>
+                <span class="sensor-value" id="floor2-ph">--</span>
+            </div>
+        </div>
+        <div class="floor-controls">
+            <button class="btn btn-sm" onclick="toggleLed(2)">
+                <span class="icon-mask icon-mask--sm icon-led control-icon" aria-hidden="true"></span> LED
+            </button>
+            <button class="btn btn-sm" onclick="togglePump(2)">
+                <span class="icon-mask icon-mask--sm icon-pump control-icon" aria-hidden="true"></span> Bơm
+            </button>
+            <button class="btn btn-sm" onclick="toggleFan(2)">
+                <span class="icon-mask icon-mask--sm icon-fan control-icon" aria-hidden="true"></span> Quạt
+            </button>
+        </div>
+    </div>
+    
+    <!-- Floor 3 -->
+    <div class="card floor-card" data-floor="3">
+        <div class="card-header">
+            <h3><span class="icon-mask icon-mask--sm icon-leaf floor-title-icon" aria-hidden="true"></span>Tầng 3</h3>
+            <span class="status-badge online">Online</span>
+        </div>
+        <div class="floor-sensors">
+            <div class="sensor-row">
+                <span class="sensor-label sensor-label-with-icon"><span class="icon-mask icon-mask--xs icon-temp sensor-label-icon" aria-hidden="true"></span>Nhiệt độ</span>
+                <span class="sensor-value" id="floor3-temp">-- °C</span>
+            </div>
+            <div class="sensor-row">
+                <span class="sensor-label sensor-label-with-icon"><span class="icon-mask icon-mask--xs icon-humidity sensor-label-icon" aria-hidden="true"></span>Độ ẩm</span>
+                <span class="sensor-value" id="floor3-hum">-- %</span>
+            </div>
+            <div class="sensor-row">
+                <span class="sensor-label sensor-label-with-icon"><span class="icon-mask icon-mask--xs icon-tds sensor-label-icon" aria-hidden="true"></span>TDS</span>
+                <span class="sensor-value" id="floor3-tds">-- ppm</span>
+            </div>
+            <div class="sensor-row">
+                <span class="sensor-label sensor-label-with-icon"><span class="icon-mask icon-mask--xs icon-device sensor-label-icon" aria-hidden="true"></span>pH</span>
+                <span class="sensor-value" id="floor3-ph">--</span>
+            </div>
+        </div>
+        <div class="floor-controls">
+            <button class="btn btn-sm" onclick="toggleLed(3)">
+                <span class="icon-mask icon-mask--sm icon-led control-icon" aria-hidden="true"></span> LED
+            </button>
+            <button class="btn btn-sm" onclick="togglePump(3)">
+                <span class="icon-mask icon-mask--sm icon-pump control-icon" aria-hidden="true"></span> Bơm
+            </button>
+            <button class="btn btn-sm" onclick="toggleFan(3)">
+                <span class="icon-mask icon-mask--sm icon-fan control-icon" aria-hidden="true"></span> Quạt
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Charts -->
+<div class="section-title">Biểu đồ dữ liệu</div>
+<div class="charts-grid">
+    <div class="chart-card">
+        <div class="chart-header">
+            <h3 class="chart-title"><span class="icon-mask icon-mask--sm icon-chart" aria-hidden="true"></span>Biểu đồ nhiệt độ</h3>
+        </div>
+        <div class="chart-body">
+            <canvas id="tempChart"></canvas>
+        </div>
+    </div>
+    
+    <div class="chart-card">
+        <div class="chart-header">
+            <h3 class="chart-title"><span class="icon-mask icon-mask--sm icon-chart" aria-hidden="true"></span>Biểu đồ độ ẩm</h3>
+        </div>
+        <div class="chart-body">
+            <canvas id="humChart"></canvas>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

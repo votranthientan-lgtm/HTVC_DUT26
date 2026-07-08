@@ -1,0 +1,1084 @@
+{% extends "base.html" %} {% block title %}Tầng - HTVC{% endblock %} {%
+block content %}
+<div class="section-title">Hiển thị từng tầng</div>
+
+<div class="floors-tabs">
+  <button class="floor-tab active" data-floor="1" onclick="showFloor(1)">
+    <span
+      class="icon-mask icon-mask--sm icon-leaf floor-tab-icon"
+      aria-hidden="true"
+    ></span
+    >Tầng 1
+  </button>
+  <button class="floor-tab" data-floor="2" onclick="showFloor(2)">
+    <span
+      class="icon-mask icon-mask--sm icon-leaf floor-tab-icon"
+      aria-hidden="true"
+    ></span
+    >Tầng 2
+  </button>
+  <button class="floor-tab" data-floor="3" onclick="showFloor(3)">
+    <span
+      class="icon-mask icon-mask--sm icon-leaf floor-tab-icon"
+      aria-hidden="true"
+    ></span
+    >Tầng 3
+  </button>
+</div>
+
+<div class="floor-content" id="floor1-content">
+  <div class="floor-header">
+    <h2>
+      <span
+        class="icon-mask icon-mask--sm icon-leaf floor-title-icon"
+        aria-hidden="true"
+      ></span>Tầng 1
+    </h2>
+    <span class="status-badge online">Online</span>
+  </div>
+
+  <div class="floor-grid" id="f1-grid">
+    <div class="sensor-card">
+      <div class="sensor-icon">
+        <span
+          class="icon-mask icon-mask--md icon-temp"
+          aria-hidden="true"
+        ></span>
+      </div>
+      <div class="sensor-info">
+        <span class="sensor-label">Nhiệt độ không khí</span>
+        <span class="sensor-value" id="f1-temp">-- °C</span>
+      </div>
+    </div>
+
+    <div class="sensor-card">
+      <div class="sensor-icon">
+        <span
+          class="icon-mask icon-mask--md icon-humidity"
+          aria-hidden="true"
+        ></span>
+      </div>
+      <div class="sensor-info">
+        <span class="sensor-label">Độ ẩm</span>
+        <span class="sensor-value" id="f1-hum">-- %</span>
+      </div>
+    </div>
+
+    <div class="sensor-card">
+      <div class="sensor-icon">
+        <span
+          class="icon-mask icon-mask--md icon-temp"
+          aria-hidden="true"
+        ></span>
+      </div>
+      <div class="sensor-info">
+        <span class="sensor-label">Nhiệt độ nước</span>
+        <span class="sensor-value" id="f1-tempW">-- °C</span>
+      </div>
+    </div>
+
+    <div class="sensor-card">
+      <div class="sensor-icon">
+        <span
+          class="icon-mask icon-mask--md icon-device"
+          aria-hidden="true"
+        ></span>
+      </div>
+      <div class="sensor-info">
+        <span class="sensor-label">pH</span>
+        <span class="sensor-value" id="f1-ph">--</span>
+      </div>
+    </div>
+
+    <div class="sensor-card">
+      <div class="sensor-icon">
+        <span
+          class="icon-mask icon-mask--md icon-tds"
+          aria-hidden="true"
+        ></span>
+      </div>
+      <div class="sensor-info">
+        <span class="sensor-label">TDS</span>
+        <span class="sensor-value" id="f1-tds">-- ppm</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="env-status-panel">
+    <div class="env-status-header">
+      <h3>
+        <span
+          class="icon-mask icon-mask--sm icon-device floor-title-icon"
+          aria-hidden="true"
+        ></span
+        >Trạng thái môi trường
+      </h3>
+      <span class="env-overall-badge env-good" id="f1-overall"
+        >Đang đánh giá</span
+      >
+    </div>
+    <div class="env-status-grid">
+      <div class="env-item">
+        <div class="env-item-head">
+          <span>Nhiệt độ không khí</span><strong id="f1-temp-state">--</strong>
+        </div>
+        <div class="env-bar"><span id="f1-temp-bar"></span></div>
+      </div>
+      <div class="env-item">
+        <div class="env-item-head">
+          <span>Độ ẩm</span><strong id="f1-hum-state">--</strong>
+        </div>
+        <div class="env-bar"><span id="f1-hum-bar"></span></div>
+      </div>
+      <div class="env-item">
+        <div class="env-item-head">
+          <span>pH</span><strong id="f1-ph-state">--</strong>
+        </div>
+        <div class="env-bar"><span id="f1-ph-bar"></span></div>
+      </div>
+      <div class="env-item">
+        <div class="env-item-head">
+          <span>TDS</span><strong id="f1-tds-state">--</strong>
+        </div>
+        <div class="env-bar"><span id="f1-tds-bar"></span></div>
+      </div>
+    </div>
+    <p class="env-recommend" id="f1-recommend">
+    </p>
+  </div class="floor-content">
+    <button class="btn btn-primary" 
+    type="button"
+    onclick="toggleControl(1,'AUTO')"
+  >
+    <span 
+      class="icon-mask icon-mask--sm icon-chart control-action-icon
+      " aria-hidden="true"
+    ></span>  
+</button>    
+  <div>
+  </div>
+  <div class="floor-control-panel">
+    <h3>
+      <span
+        class="icon-mask icon-mask--sm icon-led floor-title-icon"
+        aria-hidden="true"
+      ></span
+      >Điều khiển Tầng 1
+    </h3>
+    <div class="floor-control-grid">
+<button
+        class="control-action"
+        type="button"
+        onclick="toggleControl(1, 'led')"
+      >
+        <span
+          class="icon-mask icon-mask--sm icon-led control-action-icon"
+          aria-hidden="true"
+        ></span>
+        <span id="f1-led-label">LED: Tắt</span>
+      </button>
+      <button
+        class="control-action"
+        type="button"
+        onclick="toggleControl(1, 'pump')"
+      >
+        <span
+          class="icon-mask icon-mask--sm icon-pump control-action-icon"
+          aria-hidden="true"
+        ></span>
+        <span id="f1-pump-label">Bơm: Tắt</span>
+      </button>
+      <div class="control-slider-card">
+        <div class="control-slider-header">
+          <span
+            ><span
+              class="icon-mask icon-mask--xs icon-chart control-action-icon"
+              aria-hidden="true"
+            ></span
+            >Độ sáng LED</span
+          >
+          <strong id="brightness-value-1">100%</strong>
+        </div>
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value="100"
+          id="brightness-1"
+          onchange="sendControl(1, 'brightness', this.value)"
+        />
+      </div>
+    </div>
+
+    <div class="schedule-inline-block">
+      <h4>
+        <span
+          class="icon-mask icon-mask--sm icon-chart floor-title-icon"
+          aria-hidden="true"
+        ></span
+        >Lịch trình Tầng 1
+      </h4>
+      <div class="schedule-form-grid">
+        <div class="form-group">
+          <label for="schedule-target-1">Thiết bị</label>
+          <select id="schedule-target-1">
+            <option value="pump">Bơm nước</option>
+            <option value="led">Đèn LED</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="schedule-start-1">Bắt đầu</label>
+          <input id="schedule-start-1" type="time" value="07:00" />
+        </div>
+        <div class="form-group">
+          <label for="schedule-end-1">Kết thúc</label>
+          <input id="schedule-end-1" type="time" value="07:30" />
+        </div>
+        <button
+          class="btn btn-primary"
+          type="button"
+          onclick="addFloorSchedule(1)"
+        >
+          Thêm lịch
+        </button>
+      </div>
+      <div class="schedule-list" id="schedule-list-1"></div>
+    </div>
+  </div>
+</div>
+
+<div class="floor-content" id="floor2-content" style="display: none">
+  <div class="floor-header">
+    <h2>
+      <span
+        class="icon-mask icon-mask--sm icon-leaf floor-title-icon"
+        aria-hidden="true"
+      ></span>Tầng 2
+    </h2>
+    <span class="status-badge online">Online</span>
+  </div>
+  <div class="floor-grid" id="f2-grid">
+    <div class="sensor-card">
+      <div class="sensor-icon">
+        <span
+          class="icon-mask icon-mask--md icon-temp"
+          aria-hidden="true"
+        ></span>
+      </div>
+      <div class="sensor-info">
+        <span class="sensor-label">Nhiệt độ không khí</span>
+        <span class="sensor-value" id="f2-temp">-- °C</span>
+      </div>
+    </div>
+    <div class="sensor-card">
+      <div class="sensor-icon">
+        <span
+          class="icon-mask icon-mask--md icon-humidity"
+          aria-hidden="true"
+        ></span>
+      </div>
+      <div class="sensor-info">
+        <span class="sensor-label">Độ ẩm</span>
+        <span class="sensor-value" id="f2-hum">-- %</span>
+      </div>
+    </div>
+    <div class="sensor-card">
+      <div class="sensor-icon">
+        <span
+          class="icon-mask icon-mask--md icon-temp"
+          aria-hidden="true"
+        ></span>
+      </div>
+      <div class="sensor-info">
+        <span class="sensor-label">Nhiệt độ nước</span>
+        <span class="sensor-value" id="f2-tempW">-- °C</span>
+      </div>
+    </div>
+    <div class="sensor-card">
+      <div class="sensor-icon">
+        <span
+          class="icon-mask icon-mask--md icon-device"
+          aria-hidden="true"
+        ></span>
+      </div>
+      <div class="sensor-info">
+        <span class="sensor-label">pH</span>
+        <span class="sensor-value" id="f2-ph">--</span>
+      </div>
+    </div>
+    <div class="sensor-card">
+      <div class="sensor-icon">
+        <span
+          class="icon-mask icon-mask--md icon-tds"
+          aria-hidden="true"
+        ></span>
+      </div>
+      <div class="sensor-info">
+        <span class="sensor-label">TDS</span>
+        <span class="sensor-value" id="f2-tds">-- ppm</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="env-status-panel">
+    <div class="env-status-header">
+      <h3>
+        <span
+          class="icon-mask icon-mask--sm icon-device floor-title-icon"
+          aria-hidden="true"
+        ></span
+        >Trạng thái môi trường
+      </h3>
+      <span class="env-overall-badge env-good" id="f2-overall"
+        >Đang đánh giá</span
+      >
+    </div>
+    <div class="env-status-grid">
+      <div class="env-item">
+        <div class="env-item-head">
+          <span>Nhiệt độ không khí</span><strong id="f2-temp-state">--</strong>
+        </div>
+        <div class="env-bar"><span id="f2-temp-bar"></span></div>
+      </div>
+      <div class="env-item">
+        <div class="env-item-head">
+          <span>Độ ẩm</span><strong id="f2-hum-state">--</strong>
+        </div>
+        <div class="env-bar"><span id="f2-hum-bar"></span></div>
+      </div>
+      <div class="env-item">
+        <div class="env-item-head">
+          <span>pH</span><strong id="f2-ph-state">--</strong>
+        </div>
+        <div class="env-bar"><span id="f2-ph-bar"></span></div>
+      </div>
+      <div class="env-item">
+        <div class="env-item-head">
+          <span>TDS</span><strong id="f2-tds-state">--</strong>
+        </div>
+        <div class="env-bar"><span id="f2-tds-bar"></span></div>
+      </div>
+    </div>
+    <p class="env-recommend" id="f2-recommend">
+      Khuyến nghị sẽ hiển thị khi có dữ liệu.
+    </p>
+  </div>
+
+  <div class="floor-control-panel">
+    <h3>
+      <span
+        class="icon-mask icon-mask--sm icon-led floor-title-icon"
+        aria-hidden="true"
+      ></span
+      >Điều khiển Tầng 2
+    </h3>
+    <div class="floor-control-grid">
+      <button
+        class="control-action"
+        type="button"
+        onclick="toggleControl(2, 'led')"
+      >
+        <span
+          class="icon-mask icon-mask--sm icon-led control-action-icon"
+          aria-hidden="true"
+        ></span>
+        <span id="f2-led-label">LED: Tắt</span>
+      </button>
+      <button
+        class="control-action"
+        type="button"
+        onclick="toggleControl(2, 'pump')"
+      >
+        <span
+          class="icon-mask icon-mask--sm icon-pump control-action-icon"
+          aria-hidden="true"
+        ></span>
+        <span id="f2-pump-label">Bơm: Tắt</span>
+      </button>
+      <div class="control-slider-card">
+        <div class="control-slider-header">
+          <span
+            ><span
+              class="icon-mask icon-mask--xs icon-chart control-action-icon"
+              aria-hidden="true"
+            ></span
+            >Độ sáng LED</span
+          >
+          <strong id="brightness-value-2">100%</strong>
+        </div>
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value="100"
+          id="brightness-2"
+          onchange="sendControl(2, 'brightness', this.value)"
+        />
+      </div>
+    </div>
+
+    <div class="schedule-inline-block">
+      <h4>
+        <span
+          class="icon-mask icon-mask--sm icon-chart floor-title-icon"
+          aria-hidden="true"
+        ></span
+        >Lịch trình Tầng 2
+      </h4>
+      <div class="schedule-form-grid">
+        <div class="form-group">
+          <label for="schedule-target-2">Thiết bị</label>
+          <select id="schedule-target-2">
+            <option value="pump">Bơm nước</option>
+            <option value="led">Đèn LED</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="schedule-start-2">Bắt đầu</label>
+          <input id="schedule-start-2" type="time" value="07:00" />
+        </div>
+        <div class="form-group">
+          <label for="schedule-end-2">Kết thúc</label>
+          <input id="schedule-end-2" type="time" value="07:30" />
+        </div>
+        <button
+          class="btn btn-primary"
+          type="button"
+          onclick="addFloorSchedule(2)"
+        >
+          Thêm lịch
+        </button>
+      </div>
+      <div class="schedule-list" id="schedule-list-2"></div>
+    </div>
+  </div>
+
+  </div>
+</div>
+
+<div class="floor-content" id="floor3-content" style="display: none">
+  <div class="floor-header">
+    <h2>
+      <span
+        class="icon-mask icon-mask--sm icon-leaf floor-title-icon"
+        aria-hidden="true"
+      ></span>Tầng 3
+    </h2>
+    <span class="status-badge online">Online</span>
+  </div>
+  <div class="floor-grid" id="f3-grid">
+    <div class="sensor-card">
+      <div class="sensor-icon">
+        <span
+          class="icon-mask icon-mask--md icon-temp"
+          aria-hidden="true"
+        ></span>
+      </div>
+      <div class="sensor-info">
+        <span class="sensor-label">Nhiệt độ không khí</span>
+        <span class="sensor-value" id="f3-temp">-- °C</span>
+      </div>
+    </div>
+    <div class="sensor-card">
+      <div class="sensor-icon">
+        <span
+          class="icon-mask icon-mask--md icon-humidity"
+          aria-hidden="true"
+        ></span>
+      </div>
+      <div class="sensor-info">
+        <span class="sensor-label">Độ ẩm</span>
+        <span class="sensor-value" id="f3-hum">-- %</span>
+      </div>
+    </div>
+    <div class="sensor-card">
+      <div class="sensor-icon">
+        <span
+          class="icon-mask icon-mask--md icon-temp"
+          aria-hidden="true"
+        ></span>
+      </div>
+      <div class="sensor-info">
+        <span class="sensor-label">Nhiệt độ nước</span>
+        <span class="sensor-value" id="f3-tempW">-- °C</span>
+      </div>
+    </div>
+    <div class="sensor-card">
+      <div class="sensor-icon">
+        <span
+          class="icon-mask icon-mask--md icon-device"
+          aria-hidden="true"
+        ></span>
+      </div>
+      <div class="sensor-info">
+        <span class="sensor-label">pH</span>
+        <span class="sensor-value" id="f3-ph">--</span>
+      </div>
+    </div>
+    <div class="sensor-card">
+      <div class="sensor-icon">
+        <span
+          class="icon-mask icon-mask--md icon-tds"
+          aria-hidden="true"
+        ></span>
+      </div>
+      <div class="sensor-info">
+        <span class="sensor-label">TDS</span>
+        <span class="sensor-value" id="f3-tds">-- ppm</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="env-status-panel">
+    <div class="env-status-header">
+      <h3>
+        <span
+          class="icon-mask icon-mask--sm icon-device floor-title-icon"
+          aria-hidden="true"
+        ></span
+        >Trạng thái môi trường
+      </h3>
+      <span class="env-overall-badge env-good" id="f3-overall"
+        >Đang đánh giá</span
+      >
+    </div>
+    <div class="env-status-grid">
+      <div class="env-item">
+        <div class="env-item-head">
+          <span>Nhiệt độ không khí</span><strong id="f3-temp-state">--</strong>
+        </div>
+        <div class="env-bar"><span id="f3-temp-bar"></span></div>
+      </div>
+      <div class="env-item">
+        <div class="env-item-head">
+          <span>Độ ẩm</span><strong id="f3-hum-state">--</strong>
+        </div>
+        <div class="env-bar"><span id="f3-hum-bar"></span></div>
+      </div>
+      <div class="env-item">
+        <div class="env-item-head">
+          <span>pH</span><strong id="f3-ph-state">--</strong>
+        </div>
+        <div class="env-bar"><span id="f3-ph-bar"></span></div>
+      </div>
+      <div class="env-item">
+        <div class="env-item-head">
+          <span>TDS</span><strong id="f3-tds-state">--</strong>
+        </div>
+        <div class="env-bar"><span id="f3-tds-bar"></span></div>
+      </div>
+    </div>
+    <p class="env-recommend" id="f3-recommend">
+      Khuyến nghị sẽ hiển thị khi có dữ liệu.
+    </p>
+  </div>
+
+  <div class="floor-control-panel">
+    <h3>
+      <span
+        class="icon-mask icon-mask--sm icon-led floor-title-icon"
+        aria-hidden="true"
+      ></span
+      >Điều khiển Tầng 3
+    </h3>
+    <div class="floor-control-grid">
+      <button
+        class="control-action"
+        type="button"
+        onclick="toggleControl(3, 'led')"
+      >
+        <span
+          class="icon-mask icon-mask--sm icon-led control-action-icon"
+          aria-hidden="true"
+        ></span>
+        <span id="f3-led-label">LED: Tắt</span>
+      </button>
+      <button
+        class="control-action"
+        type="button"
+        onclick="toggleControl(3, 'pump')"
+      >
+        <span
+          class="icon-mask icon-mask--sm icon-pump control-action-icon"
+          aria-hidden="true"
+        ></span>
+        <span id="f3-pump-label">Bơm: Tắt</span>
+      </button>
+      <div class="control-slider-card">
+        <div class="control-slider-header">
+          <span
+            ><span
+              class="icon-mask icon-mask--xs icon-chart control-action-icon"
+              aria-hidden="true"
+            ></span
+            >Độ sáng LED</span
+          >
+          <strong id="brightness-value-3">100%</strong>
+        </div>
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value="100"
+          id="brightness-3"
+          onchange="sendControl(3, 'brightness', this.value)"
+        />
+      </div>
+    </div>
+
+    <div class="schedule-inline-block">
+      <h4>
+        <span
+          class="icon-mask icon-mask--sm icon-chart floor-title-icon"
+          aria-hidden="true"
+        ></span
+        >Lịch trình Tầng 3
+      </h4>
+      <div class="schedule-form-grid">
+        <div class="form-group">
+          <label for="schedule-target-3">Thiết bị</label>
+          <select id="schedule-target-3">
+            <option value="pump">Bơm nước</option>
+            <option value="led">Đèn LED</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="schedule-start-3">Bắt đầu</label>
+          <input id="schedule-start-3" type="time" value="07:00" />
+        </div>
+        <div class="form-group">
+          <label for="schedule-end-3">Kết thúc</label>
+          <input id="schedule-end-3" type="time" value="07:30" />
+        </div>
+        <button
+          class="btn btn-primary"
+          type="button"
+          onclick="addFloorSchedule(3)"
+        >
+          Thêm lịch
+        </button>
+      </div>
+      <div class="schedule-list" id="schedule-list-3"></div>
+    </div>
+  </div>
+</div>
+
+{% endblock %} {% block scripts %}
+<script src="{{ url_for('static', filename='js/floors.js') }}"></script>
+
+<style>
+  .floors-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .floor-tab {
+    padding: 12px 24px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .floor-tab:hover {
+    color: var(--text);
+  }
+
+  .floor-tab.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+  }
+
+  .floor-content {
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .floor-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .floor-header h2 {
+    font-size: 1.5rem;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .floor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .sensor-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .sensor-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: rgba(0, 212, 170, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sensor-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sensor-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .sensor-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: "JetBrains Mono", monospace;
+    color: var(--primary);
+  }
+
+  .floor-chart {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+
+  .env-status-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    margin-bottom: 24px;
+  }
+
+  .env-status-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .env-status-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .env-overall-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+  }
+
+  .env-good {
+    color: var(--success);
+    background: rgba(34, 197, 94, 0.12);
+    border-color: rgba(34, 197, 94, 0.28);
+  }
+
+  .env-warn {
+    color: var(--warning);
+    background: rgba(245, 158, 11, 0.14);
+    border-color: rgba(245, 158, 11, 0.3);
+  }
+
+  .env-bad {
+    color: var(--danger);
+    background: rgba(239, 68, 68, 0.14);
+    border-color: rgba(239, 68, 68, 0.32);
+  }
+
+  .env-status-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .env-item {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.015);
+  }
+
+  .env-item-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+  }
+
+  .env-item-head span {
+    color: var(--text-muted);
+  }
+
+  .env-item-head strong {
+    color: var(--text);
+  }
+
+  .env-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .env-bar > span {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: var(--success);
+    transition:
+      width 0.35s ease,
+      background-color 0.35s ease;
+  }
+
+  .env-recommend {
+    margin: 12px 0 0 0;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  .floor-control-panel {
+    background: linear-gradient(
+      145deg,
+      rgba(0, 212, 170, 0.05),
+      rgba(255, 255, 255, 0.02)
+    );
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    margin-bottom: 24px;
+  }
+
+  .floor-control-panel h3 {
+    margin: 0 0 16px 0;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .floor-control-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .control-action,
+  .control-slider-card {
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+    padding: 14px;
+  }
+
+  .control-action {
+    color: var(--text);
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .control-action.active {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(0, 212, 170, 0.08);
+  }
+
+  .control-action-icon {
+    flex: 0 0 auto;
+  }
+
+  .control-slider-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .control-slider-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .control-slider-card input[type="range"] {
+    width: 100%;
+  }
+
+  .floor-chart h3 {
+    margin: 0 0 16px 0;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .floor-chart canvas {
+    height: 250px;
+  }
+
+  .schedule-inline-block {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .schedule-inline-block h4 {
+    margin: 0 0 12px 0;
+    font-size: 0.92rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .schedule-form-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 1fr auto;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-group label {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+  }
+
+  .form-group select,
+  .form-group input {
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 9px 10px;
+  }
+
+  .schedule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .schedule-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+  }
+
+  .schedule-item-main {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.84rem;
+  }
+
+  .schedule-chip {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+
+  .schedule-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .btn-ghost {
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    border-radius: 8px;
+    padding: 6px 9px;
+    font-size: 0.75rem;
+    cursor: pointer;
+  }
+
+  .btn-ghost:hover {
+    color: var(--text);
+  }
+
+  @media (max-width: 900px) {
+    .floor-control-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .env-status-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .schedule-form-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .sensor-card {
+      padding: 16px;
+    }
+  }
+</style>
+{% endblock %}

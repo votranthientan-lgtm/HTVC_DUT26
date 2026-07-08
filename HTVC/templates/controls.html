@@ -1,0 +1,207 @@
+{% extends "base.html" %} {% block title %}Điều khiển - HTVC{% endblock %} {%
+block active %}controls{% endblock %} {% block content %}
+<div class="section-title">Điều khiển thiết bị</div>
+
+<div class="control-banner">
+  <div>
+    <h3>
+      <span
+        class="icon-mask icon-mask--sm icon-device floor-title-icon"
+        aria-hidden="true"
+      ></span
+      >Điều khiển đã được gộp vào từng tầng
+    </h3>
+    <p>
+      Vào trang Tầng để bật LED, bơm và chỉnh độ sáng ngay trên từng khối tầng.
+    </p>
+  </div>
+  <a class="btn btn-primary" href="{{ url_for('dashboard.floors_page') }}"
+    >Mở trang từng tầng</a
+  >
+</div>
+
+<!-- Schedule Section -->
+<div class="section-title" style="margin-top: 40px">Lịch trình tưới tiêu</div>
+<div class="schedule-card">
+  <div class="schedule-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label>Tầng</label>
+        <select id="schedule-floor">
+          <option value="1">Tầng 1</option>
+          <option value="2">Tầng 2</option>
+          <option value="3">Tầng 3</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Thời gian bắt đầu</label>
+        <input type="time" id="schedule-start" value="08:00" />
+      </div>
+      <div class="form-group">
+        <label>Thời gian kết thúc</label>
+        <input type="time" id="schedule-end" value="08:30" />
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="addSchedule()">
+      Thêm lịch trình
+    </button>
+  </div>
+
+  <div class="schedule-list" id="scheduleList">
+    <div class="empty-state">
+      <p>Chưa có lịch trình nào</p>
+    </div>
+  </div>
+</div>
+
+{% endblock %} {% block scripts %}
+<script src="{{ url_for('static', filename='js/controls.js') }}"></script>
+
+<style>
+  .control-banner {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .control-banner h3 {
+    font-size: 1.05rem;
+    margin: 0 0 6px 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .control-banner p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  .control-banner .btn {
+    white-space: nowrap;
+  }
+
+  .schedule-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+
+  .schedule-form {
+    margin-bottom: 20px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-group label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  .form-group select,
+  .form-group input {
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 0.875rem;
+  }
+
+  .schedule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .schedule-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+  }
+
+  .schedule-info {
+    display: flex;
+    gap: 16px;
+  }
+
+  .schedule-floor {
+    font-weight: 600;
+  }
+
+  .schedule-time {
+    font-family: "JetBrains Mono", monospace;
+    color: var(--text-muted);
+  }
+
+  .btn-danger {
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--danger);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+
+  .btn-danger:hover {
+    background: rgba(239, 68, 68, 0.25);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 32px;
+    color: var(--text-muted);
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .toast-success {
+    background: rgba(34, 197, 94, 0.15);
+    color: var(--success);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+  }
+
+  .toast-error {
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--danger);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+</style>
+{% endblock %}

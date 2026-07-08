@@ -1,0 +1,16 @@
+{
+  "C_Cpp.default.includePath": [
+    "${env:USERPROFILE}/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/**",
+    "${env:USERPROFILE}/.platformio/packages/framework-arduinoespressif32/cores/esp32",
+    "${env:USERPROFILE}/.platformio/packages/framework-arduinoespressif32/variants/esp32",
+    "${env:USERPROFILE}/.platformio/packages/framework-arduinoespressif32/libraries/WiFi/src",
+    "${env:USERPROFILE}/.platformio/packages/framework-arduinoespressif32/libraries/WiFiClientSecure/src",
+    "${env:USERPROFILE}/.platformio/packages/framework-arduinoespressif32/libraries/SPI/src",
+    "${env:USERPROFILE}/.platformio/packages/framework-arduinoespressif32/libraries/Ethernet/src",
+    "${workspaceFolder}/esp32/.pio/libdeps/esp32dev/ArduinoJson/src",
+    "${workspaceFolder}/esp32/.pio/libdeps/esp32dev/PubSubClient/src",
+    "${workspaceFolder}/esp32/.pio/libdeps/esp32dev/WebSockets/src",
+    "${workspaceFolder}/esp32/htvc/include",
+    "${workspaceFolder}/esp32/htvc/components/**/include"
+  ]
+}

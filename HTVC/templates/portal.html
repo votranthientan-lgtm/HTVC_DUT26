@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTVC - Tủ Rau Thông Minh</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #070d18;
+            --bg-soft: #101a2b;
+            --text: #e8ebf0;
+            --text-muted: #8e9db2;
+            --border: #23344d;
+            --primary: #00d4aa;
+            --shadow: 0 24px 44px -28px rgba(0, 0, 0, 0.75);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background:
+                radial-gradient(1000px 420px at 12% -8%, rgba(0, 212, 170, 0.16), transparent 62%),
+                radial-gradient(880px 360px at 88% 0%, rgba(59, 130, 246, 0.16), transparent 60%),
+                linear-gradient(135deg, var(--bg) 0%, var(--bg-soft) 100%);
+            min-height: 100vh;
+            color: var(--text);
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            text-align: center;
+            padding: 40px 0;
+        }
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4aa, #00a88a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .logo::before {
+            content: "";
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(0, 212, 170, 0.14) url("{{ url_for('static', filename='images/dashboard.svg') }}") center/24px no-repeat;
+            border: 1px solid rgba(0, 212, 170, 0.45);
+            box-shadow: 0 0 20px rgba(0, 212, 170, 0.2);
+            -webkit-text-fill-color: initial;
+        }
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+        .portal-actions {
+            margin-top: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .action-btn {
+            border: 1px solid #2d3a4d;
+            background: rgba(255,255,255,0.04);
+            color: #e8ebf0;
+            border-radius: 10px;
+            padding: 9px 14px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .action-btn:hover {
+            border-color: #00d4aa;
+            color: #00d4aa;
+        }
+        .auto-refresh {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #98a3b3;
+            font-size: 0.88rem;
+        }
+        .last-updated {
+            color: #6b7888;
+            font-size: 0.82rem;
+        }
+        .floors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+            align-items: stretch;
+        }
+        .floor-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+            background: linear-gradient(145deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015));
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        .floor-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: var(--card-watermark) right 16px top 16px / 82px no-repeat;
+            opacity: 0.08;
+            pointer-events: none;
+        }
+        .floor-card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--card-accent), transparent 78%);
+        }
+        .floor-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--card-accent);
+            box-shadow: 0 24px 52px -30px rgba(0, 0, 0, 0.88);
+        }
+        .floor-icon {
+            width: 62px;
+            height: 62px;
+            margin: 0 auto 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.05) var(--card-watermark) center/36px no-repeat;
+        }
+        .floor-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+        .sensor-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .sensor-row:last-child { border-bottom: none; }
+        .sensor-label {
+            color: var(--text-muted);
+            font-size: 0.98rem;
+            font-weight: 500;
+        }
+        .sensor-value {
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--primary);
+            text-align: right;
+            min-width: 90px;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 16px;
+            align-self: center;
+        }
+        .status-online {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        .status-offline {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .floor-1 {
+            --card-accent: #00d4aa;
+            --card-watermark: url("{{ url_for('static', filename='images/students.svg') }}");
+        }
+        .floor-2 {
+            --card-accent: #22c55e;
+            --card-watermark: url("{{ url_for('static', filename='images/bookings.svg') }}");
+        }
+        .floor-3 {
+            --card-accent: #f59e0b;
+            --card-watermark: url("{{ url_for('static', filename='images/machines.svg') }}");
+        }
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+            }
+            .portal-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .action-btn,
+            .auto-refresh,
+            .last-updated {
+                width: 100%;
+                justify-content: center;
+                text-align: center;
+            }
+            .floor-card {
+                padding: 20px;
+            }
+            .sensor-row {
+                padding: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">HTVC</div>
+            <p class="subtitle">Tủ Rau Thông Minh - Giám sát theo thời gian thực</p>
+            <div class="portal-actions">
+                <button id="refreshNowBtn" class="action-btn" type="button">Làm mới ngay</button>
+                <label class="auto-refresh" for="autoRefreshToggle">
+                    <input id="autoRefreshToggle" type="checkbox" checked>
+                    Tự động cập nhật 5 giây
+                </label>
+                <span class="last-updated">Lần cập nhật: <strong id="lastUpdated">--:--:--</strong></span>
+            </div>
+        </header>
+        
+        <div class="floors-grid">
+            <div class="floor-card floor-1">
+                <div class="floor-icon"></div>
+                <div class="floor-title">Tầng 1 - Rau xanh</div>
+                <div class="sensor-row">
+                    <span class="sensor-label">Nhiệt độ</span>
+                    <span class="sensor-value" id="f1-temp">-- °C</span>
+                </div>
+                <div class="sensor-row">
+                    <span class="sensor-label">Độ ẩm</span>
+                    <span class="sensor-value" id="f1-hum">-- %</span>
+                </div>
+                <div class="sensor-row">
+                    <span class="sensor-label">TDS</span>
+                    <span class="sensor-value" id="f1-tds">-- ppm</span>
+                </div>
+                <div class="sensor-row">
+                    <span class="sensor-label">pH</span>
+                    <span class="sensor-value" id="f1-ph">--</span>
+                </div>
+                <span class="status-badge status-offline" id="f1-status">Offline</span>
+            </div>
+            
+            <div class="floor-card floor-2">
+                <div class="floor-icon"></div>
+                <div class="floor-title">Tầng 2 - Rau thơm</div>
+                <div class="sensor-row">
+                    <span class="sensor-label">Nhiệt độ</span>
+                    <span class="sensor-value" id="f2-temp">-- °C</span>
+                </div>
+                <div class="sensor-row">
+                    <span class="sensor-label">Độ ẩm</span>
+                    <span class="sensor-value" id="f2-hum">-- %</span>
+                </div>
+                <div class="sensor-row">
+                    <span class="sensor-label">TDS</span>
+                    <span class="sensor-value" id="f2-tds">-- ppm</span>
+                </div>
+                <div class="sensor-row">
+                    <span class="sensor-label">pH</span>
+                    <span class="sensor-value" id="f2-ph">--</span>
+                </div>
+                <span class="status-badge status-offline" id="f2-status">Offline</span>
+            </div>
+            
+            <div class="floor-card floor-3">
+                <div class="floor-icon"></div>
+                <div class="floor-title">Tầng 3 - Thảo mộc</div>
+                <div class="sensor-row">
+                    <span class="sensor-label">Nhiệt độ</span>
+                    <span class="sensor-value" id="f3-temp">-- °C</span>
+                </div>
+                <div class="sensor-row">
+                    <span class="sensor-label">Độ ẩm</span>
+                    <span class="sensor-value" id="f3-hum">-- %</span>
+                </div>
+                <div class="sensor-row">
+                    <span class="sensor-label">TDS</span>
+                    <span class="sensor-value" id="f3-tds">-- ppm</span>
+                </div>
+                <div class="sensor-row">
+                    <span class="sensor-label">pH</span>
+                    <span class="sensor-value" id="f3-ph">--</span>
+                </div>
+                <span class="status-badge status-offline" id="f3-status">Offline</span>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Hệ thống Tủ Rau Thông Minh - HTVC © 2024</p>
+            <p style="margin-top: 8px; font-size: 0.75rem;">Powered by ESP32 + Firebase + HiveMQ</p>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/portal.js') }}"></script>
+</body>
+</html>
